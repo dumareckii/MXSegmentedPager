@@ -243,13 +243,14 @@
 #pragma mark HMSegmentedControl target
 
 - (void)pageControlValueChanged:(HMSegmentedControl*)segmentedControl {
-    _moveSegment = NO;
+    _moveSegment = self.segmentedControl.selectedSegmentIndex == self.pager.indexForSelectedPage ? NO : YES;
     [self.pager showPageAtIndex:segmentedControl.selectedSegmentIndex animated:YES];
 }
 
 #pragma mark <MXPagerViewDelegate>
 
 - (void)pagerView:(MXPagerView *)pagerView willMoveToPageAtIndex:(NSInteger)index {
+    _moveSegment = self.segmentedControl.selectedSegmentIndex == self.pager.indexForSelectedPage ? NO : YES;
     if (_moveSegment) {
         [self.segmentedControl setSelectedSegmentIndex:index animated:YES];
     }
@@ -258,7 +259,7 @@
 - (void)pagerView:(MXPagerView *)pagerView didMoveToPageAtIndex:(NSInteger)index {
     [self.segmentedControl setSelectedSegmentIndex:index animated:NO];
     [self changedToIndex:index];
-    _moveSegment = YES;
+    _moveSegment = self.segmentedControl.selectedSegmentIndex == self.pager.indexForSelectedPage ? NO : YES;
 }
 
 #pragma mark <MXPagerViewDataSource>
